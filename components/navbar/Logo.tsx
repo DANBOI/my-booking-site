@@ -8,7 +8,7 @@ export default function Logo() {
     <Link href="/">
       <Image
         alt="logo"
-        className="hidden md:block cursor-pointer"
+        className="hidden md:block"
         height="100"
         width="100"
         src="/next.svg"

@@ -92,13 +92,13 @@ export default function LoginModal() {
         outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => {}}
+        onClick={() => signIn("google")}
       />
       <Button
         outline
         label="Continue with Github"
         icon={AiFillGithub}
-        onClick={() => {}}
+        onClick={() => signIn("github")}
       />
       <div className="mt-4 text-center font-light text-neutral-500">
         <p>
@@ -119,7 +119,7 @@ export default function LoginModal() {
       disabled={isLoading}
       isOpen={loginModal.isOpen}
       title="Log In"
-      actionLabel="Continue"
+      actionLabel="Log In"
       onClose={loginModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}

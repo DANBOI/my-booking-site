@@ -1,11 +1,12 @@
 import React from "react";
 import Container from "@/components/Container";
+import { SafeUser } from "@/types";
 import Logo from "./Logo";
 import Serach from "./Search";
 import UserMenu from "./UserMenu";
 
 type Props = {
-  currentUser?: Object | null;
+  currentUser?: SafeUser | null;
 };
 
 export default function Navbar({ currentUser }: Props) {

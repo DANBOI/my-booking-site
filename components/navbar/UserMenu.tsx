@@ -7,11 +7,12 @@ import { signOut } from "next-auth/react";
 import Avatar from "@/components/Avatar";
 import useSignupModal from "@/hooks/useSignupModal";
 import useLoginModal from "@/hooks/useLoginModal";
+import { SafeUser } from "@/types";
 
 import MenuItem from "./MenuItem";
 
 type Props = {
-  currentUser?: Object | null;
+  currentUser?: SafeUser | null;
 };
 
 export default function UserMenu({ currentUser }: Props) {
@@ -33,7 +34,7 @@ export default function UserMenu({ currentUser }: Props) {
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar />
+            <Avatar src={currentUser?.image} />
           </div>
         </div>
       </div>

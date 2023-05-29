@@ -2,14 +2,23 @@
 
 import { useCallback, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
+import { signOut } from "next-auth/react";
+
 import Avatar from "@/components/Avatar";
+import useSignupModal from "@/hooks/useSignupModal";
+import useLoginModal from "@/hooks/useLoginModal";
+
 import MenuItem from "./MenuItem";
 
-type Props = {};
+type Props = {
+  currentUser?: Object | null;
+};
 
-export default function UserMenu({}: Props) {
-  const currentUser = true;
+export default function UserMenu({ currentUser }: Props) {
   const [open, setOpen] = useState(false);
+  const signupModal = useSignupModal();
+  const loginModal = useLoginModal();
+
   //   const toggleDropdown = useCallback(() => setOpen((value) => !value), []);
 
   return (
@@ -37,12 +46,12 @@ export default function UserMenu({}: Props) {
               <MenuItem label="My reservations" href="/reservations" />
               <MenuItem label="My properties" href="/properties" />
               <hr />
-              <MenuItem label="Logout" />
+              <MenuItem label="Logout" clickHandler={signOut} />
             </>
           ) : (
             <>
-              <MenuItem label="Login" />
-              <MenuItem label="Sign up" />
+              <MenuItem label="Log In" clickHandler={loginModal.onOpen} />
+              <MenuItem label="Sign up" clickHandler={signupModal.onOpen} />
             </>
           )}
         </div>

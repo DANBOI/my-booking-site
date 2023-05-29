@@ -4,14 +4,18 @@ import Logo from "./Logo";
 import Serach from "./Search";
 import UserMenu from "./UserMenu";
 
-export default function Navbar() {
+type Props = {
+  currentUser?: Object | null;
+};
+
+export default function Navbar({ currentUser }: Props) {
   return (
     <header className="sticky z-20 w-full border-b bg-white py-4 shadow-sm">
       <Container>
         <nav className="flex items-center justify-between gap-3">
           <Logo />
           <Serach />
-          <UserMenu />
+          <UserMenu currentUser={currentUser} />
         </nav>
       </Container>
     </header>

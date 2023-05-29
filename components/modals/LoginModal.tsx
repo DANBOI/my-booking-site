@@ -1,6 +1,5 @@
 "use client";
 
-import axios from "axios";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { useState, useCallback } from "react";
@@ -16,7 +15,8 @@ import Input from "../inputs/Input";
 import Heading from "../Heading";
 import Button from "../Button";
 
-export default function SignupModal() {
+export default function LoginModal() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const loginModal = useLoginModal();
   const signupModal = useSignupModal();
@@ -27,55 +27,47 @@ export default function SignupModal() {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   });
 
-  const onToggle = useCallback(() => {
-    signupModal.onClose();
-    loginModal.onOpen();
-  }, [signupModal, loginModal]);
-
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
 
-    axios
-      .post("/api/signup", data)
-      .then((res) => {
-        toast.success("Registered!");
-        // console.log(res);
-        const { email, hashedPassword } = res.data;
-        // signIn("credentials", {
-        //   redirect: false,
-        //   email,
-        //   hashedPassword,
-        // })
-        signupModal.onClose();
-      })
-      .catch((error) => {
-        toast.error(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    signIn("credentials", {
+      redirect: false,
+      // email: data.email,
+      // password: data.password,
+      ...data,
+    }).then((res) => {
+      setIsLoading(false);
+
+      if (res?.ok) {
+        toast.success("Login Successful!");
+        loginModal.onClose();
+        router.refresh();
+      }
+
+      if (res?.error) {
+        toast.error(res.error);
+      }
+
+      //then/catch
+    });
   };
+
+  const onToggle = useCallback(() => {
+    loginModal.onClose();
+    signupModal.onOpen();
+  }, [loginModal, signupModal]);
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
-      <Heading title="Welcome to here" subtitle="Create an account!" />
+      <Heading title="Welcome back!" subtitle="Login first!" />
       <Input
         id="email"
         label="Email"
-        disabled={isLoading}
-        register={register}
-        errors={errors}
-        required
-      />
-      <Input
-        id="name"
-        label="Name"
         disabled={isLoading}
         register={register}
         errors={errors}
@@ -110,12 +102,12 @@ export default function SignupModal() {
       />
       <div className="mt-4 text-center font-light text-neutral-500">
         <p>
-          Already have an account?
+          Don&apos;t have an account?
           <span
-            onClick={onToggle}
+            onClick={onToggle} //close login,open signup
             className=" cursor-pointer text-neutral-800  hover:underline"
           >
-            Log in
+            Sign up
           </span>
         </p>
       </div>
@@ -125,10 +117,10 @@ export default function SignupModal() {
   return (
     <Modal
       disabled={isLoading}
-      isOpen={signupModal.isOpen}
-      title="Sign Up"
+      isOpen={loginModal.isOpen}
+      title="Log In"
       actionLabel="Continue"
-      onClose={signupModal.onClose}
+      onClose={loginModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
       footer={footerContent}

@@ -1,7 +1,9 @@
 import { Nunito } from "next/font/google";
 import Navbar from "@/components/navbar/Navbar";
 import SignupModal from "@/components/modals/SignupModal";
+import LoginModal from "@/components/modals/LoginModal";
 import Notification from "@/components/Notification";
+import getCurrentUser from "@/utils/getCurrentUser";
 import "./globals.css";
 
 const font = Nunito({ subsets: ["latin"] });
@@ -11,17 +13,20 @@ export const metadata = {
   description: "Boarding,ladging and renting",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const currentUser = await getCurrentUser();
+
   return (
     <html lang="en">
       <body className={font.className}>
         <Notification />
         <SignupModal />
-        <Navbar />
+        <LoginModal />
+        <Navbar currentUser={currentUser} />
         <main>{children}</main>
       </body>
     </html>

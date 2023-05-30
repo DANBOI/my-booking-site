@@ -7,6 +7,7 @@ import { signOut } from "next-auth/react";
 import Avatar from "@/components/Avatar";
 import useSignupModal from "@/hooks/useSignupModal";
 import useLoginModal from "@/hooks/useLoginModal";
+import useRentModal from "@/hooks/useRentModal";
 import { SafeUser } from "@/types";
 
 import MenuItem from "./MenuItem";
@@ -19,14 +20,18 @@ export default function UserMenu({ currentUser }: Props) {
   const [open, setOpen] = useState(false);
   const signupModal = useSignupModal();
   const loginModal = useLoginModal();
+  const rentModal = useRentModal();
 
   //   const toggleDropdown = useCallback(() => setOpen((value) => !value), []);
 
   return (
     <div className="relative">
       <div className="flex items-center gap-3">
-        <div className="hidden cursor-pointer rounded-full px-4 py-3 text-sm font-semibold transition hover:bg-secondary md:block">
-          My home
+        <div
+          onClick={currentUser ? rentModal.onOpen : loginModal.onOpen}
+          className="hidden cursor-pointer rounded-full px-4 py-3 text-sm font-semibold transition hover:bg-secondary md:block"
+        >
+          Rent your home
         </div>
         <div
           onClick={() => setOpen(!open)}

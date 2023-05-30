@@ -46,7 +46,7 @@ export default function SignupModal() {
       .then((res) => {
         toast.success("Registered!");
         // console.log(res);
-        const { email, hashedPassword } = res.data;
+        // const { email, hashedPassword } = res.data;
         // signIn("credentials", {
         //   redirect: false,
         //   email,
@@ -127,7 +127,7 @@ export default function SignupModal() {
       disabled={isLoading}
       isOpen={signupModal.isOpen}
       title="Sign Up"
-      actionLabel="Continue"
+      actionLabel="Sign Up"
       onClose={signupModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}

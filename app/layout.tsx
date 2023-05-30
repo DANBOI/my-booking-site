@@ -23,11 +23,11 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-        <Notification />
         <SignupModal />
         <LoginModal />
         <Navbar currentUser={currentUser} />
         <main>{children}</main>
+        <Notification />
       </body>
     </html>
   );

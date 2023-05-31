@@ -9,5 +9,13 @@ body,
 }
 
 .flex_center {
-  @apply flex justify-center items-center;
+  @apply flex items-center justify-center;
+}
+
+/* fix map display issue */
+.leaflet-bottom,
+.leaflet-control,
+.leaflet-pane,
+.leaflet-top {
+  z-index: 0 !important;
 }

@@ -46,9 +46,9 @@ export default function CategoryItem({ icon: Icon, label, selected }: Props) {
     <Link
       //   onClick={handleClick}
       href={selected ? "/" : `/?category=${label}`}
-      className={`flex flex-col items-center justify-center gap-2 border-b-2 p-3 transition hover:text-neutral-800 ${
+      className={`flex flex-col items-center justify-center gap-2 border-b-2 p-3 transition hover:text-primary ${
         selected
-          ? "border-b-neutral-800 text-neutral-800"
+          ? "border-b-primary text-primary"
           : "border-transparent text-neutral-500"
       }`}
     >

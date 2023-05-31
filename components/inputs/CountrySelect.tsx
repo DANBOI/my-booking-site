@@ -21,6 +21,17 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ value, onChange }) => {
   const { getAllCountries } = useCountries();
   const countries = getAllCountries();
 
+  // customize the select options's styles
+  const formattedLabel = (option: any) => (
+    <div className="flex items-center gap-3">
+      <div>{option.flag}</div>
+      <div>
+        {option.label},
+        <span className="ml-1 text-neutral-500">{option.region}</span>
+      </div>
+    </div>
+  );
+
   return (
     <Select
       placeholder="- Select a country,continent-"
@@ -28,16 +39,7 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ value, onChange }) => {
       options={countries}
       value={value}
       onChange={(value) => onChange(value as CountrySelectValue)}
-      formatOptionLabel={(option: any) => (
-        <div className="flex items-center gap-3">
-          <div>{option.flag}</div>
-          <div>
-            {option.label},
-            <span className="ml-1 text-neutral-500">{option.region}</span>
-          </div>
-        </div>
-      )}
-      // customize the select options's styles
+      formatOptionLabel={formattedLabel}
       classNames={{
         control: () => "p-3 border-2",
         input: () => "text-lg",
@@ -48,8 +50,8 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ value, onChange }) => {
         borderRadius: 6,
         colors: {
           ...theme.colors,
-          primary: "black",
-          primary25: "#14b8a6",
+          primary: "#14b8a6",
+          primary25: "#f5f5f5",
         },
       })}
     />

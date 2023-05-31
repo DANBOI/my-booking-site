@@ -8,14 +8,18 @@ body,
   height: 100%;
 }
 
-.flex_center {
-  @apply flex items-center justify-center;
-}
-
 /* fix map display issue */
 .leaflet-bottom,
 .leaflet-control,
 .leaflet-pane,
 .leaflet-top {
   z-index: 0 !important;
+}
+
+.flex_center {
+  @apply flex items-center justify-center;
+}
+
+.counter_button {
+  @apply flex_center h-10 w-10 cursor-pointer rounded-full border border-neutral-400 text-neutral-600 transition hover:opacity-80;
 }

@@ -1,14 +1,15 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import useRentModal from "@/hooks/useRentModal";
 import useCategories from "@/hooks/useCategories";
 import CategorySelect from "../inputs/CategorySelect";
+import CountrySelect from "../inputs/CountrySelect";
+import InfoCounter from "../inputs/InfoCounter";
 import Heading from "../Heading";
 import Modal from "./Modal";
-import CountrySelect from "../inputs/CountrySelect";
-import dynamic from "next/dynamic";
 // import CountryMap from "../CountryMap";
 
 type Props = {};
@@ -40,11 +41,17 @@ export default function RentModal({}: Props) {
     defaultValues: {
       category: "",
       location: "",
+      guestCount: 1,
+      roomCount: 1,
+      bathroomCount: 1,
     },
   });
 
   const category = watch("category");
   const location = watch("location");
+  const guestCount = watch("guestCount");
+  const roomCount = watch("roomCount");
+  const bathroomCount = watch("bathroomCount");
 
   //dynamic import map resouces when location changes
   const CountryMap = useMemo(
@@ -108,6 +115,36 @@ export default function RentModal({}: Props) {
 
       break;
 
+    case STEPS.INFO:
+      bodyContent = (
+        <div className="flex flex-col gap-8">
+          <Heading
+            title="provide some infomations about your home"
+            subtitle="change the numbers"
+          />
+          <InfoCounter
+            title="Guests"
+            subtitle="How many guests can be accommodated?"
+            value={guestCount}
+            onChange={(value) => setCustomValue("guestCount", value)}
+          />
+          <hr />
+          <InfoCounter
+            title="Rooms"
+            subtitle="How many rooms do you have?"
+            value={roomCount}
+            onChange={(value) => setCustomValue("roomCount", value)}
+          />
+          <hr />
+          <InfoCounter
+            title="Bathrooms"
+            subtitle="How many bathrooms do you have?"
+            value={bathroomCount}
+            onChange={(value) => setCustomValue("bathroomCount", value)}
+          />
+        </div>
+      );
+      break;
     default:
       break;
   }

@@ -19,7 +19,9 @@ export default function CategorySelect({
     <div
       onClick={() => onClick(label)}
       className={`flex_center cursor-pointer gap-3 rounded-xl border-2 p-4 transition hover:border-primary ${
-        selected ? "border-primary" : "border-neutral-200"
+        selected
+          ? "border-primary text-primary"
+          : "border-neutral-200 text-neutral-500"
       }
       `}
     >

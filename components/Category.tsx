@@ -12,7 +12,7 @@ export default function Categories() {
   const category = params?.get("category");
 
   return (
-    <div className=" flex items-center justify-between overflow-x-auto pt-4">
+    <div className="flex items-center justify-evenly overflow-x-auto px-4 pt-4">
       {categories.map((item) => (
         <CategoryItem
           key={item.label}

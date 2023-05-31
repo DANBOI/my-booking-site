@@ -8,6 +8,7 @@ import useCategories from "@/hooks/useCategories";
 import CategorySelect from "../inputs/CategorySelect";
 import CountrySelect from "../inputs/CountrySelect";
 import InfoCounter from "../inputs/InfoCounter";
+import ImageUpload from "../inputs/ImageUpload";
 import Heading from "../Heading";
 import Modal from "./Modal";
 // import CountryMap from "../CountryMap";
@@ -44,6 +45,7 @@ export default function RentModal({}: Props) {
       guestCount: 1,
       roomCount: 1,
       bathroomCount: 1,
+      imageSrc: "",
     },
   });
 
@@ -52,6 +54,7 @@ export default function RentModal({}: Props) {
   const guestCount = watch("guestCount");
   const roomCount = watch("roomCount");
   const bathroomCount = watch("bathroomCount");
+  const imageSrc = watch("imageSrc");
 
   //dynamic import map resouces when location changes
   const CountryMap = useMemo(
@@ -145,6 +148,22 @@ export default function RentModal({}: Props) {
         </div>
       );
       break;
+
+    case STEPS.IMAGES:
+      bodyContent = (
+        <div className="flex flex-col gap-8">
+          <Heading
+            title="Add a photo of your home"
+            subtitle="Show guests what your home looks like!"
+          />
+          <ImageUpload
+            value={imageSrc}
+            onChange={(value) => setCustomValue("imageSrc", value)}
+          />
+        </div>
+      );
+      break;
+
     default:
       break;
   }

@@ -42,12 +42,7 @@ export default function ImageUpload({ value, onChange }: Props) {
           {/* add image preview after successfully uploaded the image */}
           {value && (
             <div className="absolute inset-0">
-              <Image
-                fill
-                style={{ objectFit: "cover" }}
-                src={value}
-                alt="House"
-              />
+              <Image fill className="object-cover" src={value} alt="House" />
             </div>
           )}
         </div>

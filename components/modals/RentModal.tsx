@@ -94,7 +94,6 @@ export default function RentModal({}: Props) {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (!isFinalSetp) return setStep(step + 1);
-
     setIsLoading(true);
 
     axios

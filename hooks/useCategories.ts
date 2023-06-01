@@ -95,7 +95,8 @@ const categories = [
 const useCategories = () => {
   const getAllCategories = () => categories;
   const getCategoryByLabel = (label: string) =>
-    categories.filter((category) => category.label === label);
+    categories.find((category) => category.label === label);
+
   return { getAllCategories, getCategoryByLabel };
 };
 

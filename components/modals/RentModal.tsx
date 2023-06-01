@@ -1,14 +1,20 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import axios from "axios";
+
 import useRentModal from "@/hooks/useRentModal";
 import useCategories from "@/hooks/useCategories";
+
 import CategorySelect from "../inputs/CategorySelect";
 import CountrySelect from "../inputs/CountrySelect";
 import InfoCounter from "../inputs/InfoCounter";
 import ImageUpload from "../inputs/ImageUpload";
+import Input from "../inputs/Input";
 import Heading from "../Heading";
 import Modal from "./Modal";
 // import CountryMap from "../CountryMap";
@@ -25,8 +31,13 @@ enum STEPS {
 }
 
 export default function RentModal({}: Props) {
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(STEPS.CATEGORY);
+  const isInitialSetp = step === STEPS.CATEGORY;
+  const isFinalSetp = step === STEPS.PRICE;
+
   const rentModal = useRentModal();
   const { getAllCategories } = useCategories();
   const categories = getAllCategories();
@@ -41,20 +52,26 @@ export default function RentModal({}: Props) {
   } = useForm<FieldValues>({
     defaultValues: {
       category: "",
-      location: "",
+      location: null, //obj
       guestCount: 1,
       roomCount: 1,
       bathroomCount: 1,
       imageSrc: "",
+      title: "",
+      description: "",
+      price: 1,
     },
   });
 
+  //watching changed values from inputs
   const category = watch("category");
   const location = watch("location");
   const guestCount = watch("guestCount");
   const roomCount = watch("roomCount");
   const bathroomCount = watch("bathroomCount");
   const imageSrc = watch("imageSrc");
+  // const description = watch("description");
+  // const price = watch("price");
 
   //dynamic import map resouces when location changes
   const CountryMap = useMemo(
@@ -75,7 +92,31 @@ export default function RentModal({}: Props) {
     });
   };
 
-  //switch body content based on steps
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    if (!isFinalSetp) return setStep(step + 1);
+
+    setIsLoading(true);
+
+    axios
+      .post("/api/listings", data)
+      .then(() => {
+        toast.success("Listing created!");
+        router.refresh(); //update home page
+        reset(); //form values reset
+        setStep(STEPS.CATEGORY);
+        rentModal.onClose();
+      })
+      .catch((err) => {
+        // alert(err.toString());
+        toast.error(`Something went wrong`);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  /*switch body content based on steps */
+
   let bodyContent = <div>PLACE HOLDER</div>;
   switch (step) {
     case STEPS.CATEGORY:
@@ -164,6 +205,52 @@ export default function RentModal({}: Props) {
       );
       break;
 
+    case STEPS.DESCRIPTION:
+      bodyContent = (
+        <div className="flex flex-col gap-8 ">
+          <Heading
+            title="Add a description of your home"
+            subtitle="Add a short description of your home looks like!"
+          />
+          <Input
+            id="title"
+            label="Title"
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
+          />
+          <hr />
+          <Input
+            id="description"
+            label="Description"
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
+          />
+        </div>
+      );
+      break;
+
+    case STEPS.PRICE:
+      bodyContent = (
+        <div className="flex flex-col gap-8">
+          <Heading title="Set your price" subtitle="How much for one night?" />
+          <Input
+            id="price"
+            label="Price"
+            formatPrice
+            type="number"
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
+          />
+        </div>
+      );
+      break;
+
     default:
       break;
   }
@@ -173,12 +260,10 @@ export default function RentModal({}: Props) {
       disabled={isLoading}
       isOpen={rentModal.isOpen}
       title="Rent your home!"
-      actionLabel="Next"
-      onSubmit={() => setStep(step + 1)}
+      actionLabel={isFinalSetp ? "Submit" : "Next"}
+      onSubmit={handleSubmit(onSubmit)}
       secondaryActionLabel="Back"
-      secondaryAction={
-        step > STEPS.CATEGORY ? () => setStep(step - 1) : undefined
-      }
+      secondaryAction={isInitialSetp ? undefined : () => setStep(step - 1)}
       onClose={rentModal.onClose}
       body={bodyContent}
     />

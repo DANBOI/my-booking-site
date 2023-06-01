@@ -43,7 +43,7 @@ export default function Input({
           ${
             errors[id]
               ? "border-rose-500 focus:border-rose-500"
-              : "border-neutral-300 focus:border-black"
+              : "border-neutral-300 focus:border-primary"
           }`}
       />
       <label

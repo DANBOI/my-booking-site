@@ -9,6 +9,13 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "res.cloudinary.com",
     ],
+    // for dynamic srcs
+    // remotePatterns: [
+    //   {
+    //     protocol: "https",
+    //     hostname: "**",
+    //   },
+    // ],
   },
 };
 

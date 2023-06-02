@@ -4,7 +4,7 @@ import getListings from "@/utils/getListing";
 import Category from "@/components/Category";
 import Container from "@/components/Container";
 import EmptyList from "@/components/lists/EmptyList";
-import ListCard from "@/components/lists/ListCard";
+import ListGrid from "@/components/lists/ListGrid";
 
 export default async function Home() {
   const currentUser = await getCurrentUser();
@@ -14,15 +14,7 @@ export default async function Home() {
       <Category />
       <Container>
         {listings.length ? (
-          <div className="grid grid-cols-1 gap-8 pt-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-            {listings.map((listing: any) => (
-              <ListCard
-                currentUser={currentUser}
-                key={listing.id}
-                data={listing}
-              />
-            ))}
-          </div>
+          <ListGrid currentUser={currentUser} listings={listings} />
         ) : (
           <EmptyList showReset />
         )}

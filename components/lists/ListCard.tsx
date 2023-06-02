@@ -22,6 +22,8 @@ type Props = {
   actionLabel?: string;
   actionId?: string;
   currentUser?: SafeUser | null;
+  favoriteIds?: string[];
+  setfavoriteIds?: (array: string[]) => void;
 };
 
 export default function ListCard({
@@ -31,6 +33,8 @@ export default function ListCard({
   disabled,
   actionLabel,
   currentUser,
+  favoriteIds,
+  setfavoriteIds,
 }: Props) {
   const { getCountryByValue } = useCountries();
   // const router = useRouter();
@@ -45,9 +49,13 @@ export default function ListCard({
 
   return (
     <div className="group relative">
-      {currentUser && (
+      {currentUser && favoriteIds && setfavoriteIds && (
         <div className="absolute right-3 top-3 z-20">
-          <HeartButton listingId={data.id} currentUser={currentUser} />
+          <HeartButton
+            listingId={data.id}
+            favoriteIds={favoriteIds}
+            setfavoriteIds={setfavoriteIds}
+          />
         </div>
       )}
       <Link

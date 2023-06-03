@@ -18,22 +18,18 @@ type Props = {
   guestCount: number;
   roomCount: number;
   bathroomCount: number;
-  category:
-    | {
-        icon: IconType;
-        label: string;
-        description: string;
-      }
-    | undefined;
-  location:
-    | {
-        value: string;
-        label: string;
-        flag: string;
-        latlng: [number, number];
-        region: string;
-      }
-    | undefined;
+  category?: {
+    icon: IconType;
+    label: string;
+    description: string;
+  };
+  location?: {
+    value: string;
+    label: string;
+    flag: string;
+    latlng: [number, number];
+    region: string;
+  };
 };
 
 export default function ListingInfo({
@@ -47,10 +43,10 @@ export default function ListingInfo({
 }: Props) {
   {
     return (
-      <div className="col-span-4 flex flex-col gap-8">
+      <>
         <div className="flex flex-col gap-2">
           <div className=" flex items-center gap-2 text-xl font-semibold">
-            <div>Hosted by {user?.name}</div>
+            <p>Hosted by {user?.name}</p>
             <Avatar src={user?.image} />
           </div>
           <div className="flex items-center gap-4 font-light text-neutral-500">
@@ -71,7 +67,7 @@ export default function ListingInfo({
         <div className="text-lg font-light text-neutral-500">{description}</div>
         <hr />
         <CountryMap center={location?.latlng} />
-      </div>
+      </>
     );
   }
 }

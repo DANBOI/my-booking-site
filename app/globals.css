@@ -16,6 +16,17 @@ body,
   z-index: 0 !important;
 }
 
+/* re-style the calendar  */
+.rdrMonth {
+  width: 100% !important;
+}
+
+.rdrCalendarWrapper {
+  font-size: 1rem !important;
+  width: 100% !important;
+}
+
+/* custom styles */
 .flex_center {
   @apply flex items-center justify-center;
 }

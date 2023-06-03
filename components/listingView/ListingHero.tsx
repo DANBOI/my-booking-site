@@ -8,15 +8,13 @@ import HeartButton from "../HeartButton";
 
 type Props = {
   title: string;
-  location:
-    | {
-        value: string;
-        label: string;
-        flag: string;
-        latlng: [number, number];
-        region: string;
-      }
-    | undefined;
+  location?: {
+    value: string;
+    label: string;
+    flag: string;
+    latlng: [number, number];
+    region: string;
+  };
   imageSrc: string;
   id: string;
   currentUser?: SafeUser | null;
@@ -35,13 +33,8 @@ export default function ListingHero({
         title={title}
         subtitle={`${location?.region}, ${location?.label}`}
       />
-      <div className=" relative h-[60vh] w-full overflow-hidden rounded-xl">
-        <Image
-          src={imageSrc}
-          fill
-          className="w-full object-cover"
-          alt="Image"
-        />
+      <div className="relative mt-1 h-[60vh] overflow-hidden rounded-xl">
+        <Image src={imageSrc} fill className="object-cover" alt="Image" />
         <div className="absolute right-5 top-5">
           {/* <HeartButton 
             listingId={id}

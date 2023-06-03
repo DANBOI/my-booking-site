@@ -18,7 +18,7 @@ export default function ListGrid({ listings, currentUser }: Props) {
 
   return (
     <div className="list_grid">
-      {listings.map((listing: any) => (
+      {listings.map((listing: Listing) => (
         <ListCard
           currentUser={currentUser}
           key={listing.id}

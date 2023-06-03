@@ -1,5 +1,5 @@
 import getCurrentUser from "@/utils/getCurrentUser";
-import getListings from "@/utils/getListing";
+import { getListings } from "@/utils/getListings";
 
 import Category from "@/components/Category";
 import Container from "@/components/Container";

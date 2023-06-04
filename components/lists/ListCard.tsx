@@ -22,8 +22,6 @@ type Props = {
   actionLabel?: string;
   actionId?: string;
   currentUser?: SafeUser | null;
-  favoriteIds?: string[];
-  setfavoriteIds?: (array: string[]) => void;
 };
 
 export default function ListCard({
@@ -32,16 +30,24 @@ export default function ListCard({
   onAction,
   disabled,
   actionLabel,
+  actionId = "",
   currentUser,
-  favoriteIds,
-  setfavoriteIds,
 }: Props) {
   const { getCountryByValue } = useCountries();
   // const router = useRouter();
   const location = getCountryByValue(data.locationValue);
 
+  const handleCancel = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      onAction?.(actionId);
+    },
+    [onAction, actionId]
+  );
+
+  //format reservation date
   const reservationDate = useMemo(() => {
-    if (!reservation) return null;
+    if (!reservation) return;
     const start = new Date(reservation.startDate);
     const end = new Date(reservation.endDate);
     return `${format(start, "PP")} - ${format(end, "PP")}`;
@@ -49,19 +55,15 @@ export default function ListCard({
 
   return (
     <div className="group relative">
-      {currentUser && favoriteIds && setfavoriteIds && (
+      {currentUser && (
         <div className="absolute right-3 top-3 z-20">
-          <HeartButton
-            listingId={data.id}
-            // favoriteIds={favoriteIds}
-            // setfavoriteIds={setfavoriteIds}
-          />
+          <HeartButton listingId={data.id} />
         </div>
       )}
       <Link
         href={`/listings/${data.id}`}
         // onClick={() => router.push(`/listings/${data.id}`)}
-        className=" flex flex-col gap-2"
+        className=" mb-3 flex flex-col gap-2"
       >
         <figure className="relative aspect-square overflow-hidden rounded-xl">
           <Image
@@ -72,25 +74,25 @@ export default function ListCard({
           />
         </figure>
 
-        <div className="text-lg font-semibold">
+        <p className="text-lg font-semibold">
           {location?.region}, {location?.label}
-        </div>
-        <div className="-mt-2 text-sm font-light text-neutral-500">
+        </p>
+        <p className="-mt-2 text-sm font-light text-neutral-500">
           {reservationDate || data.category}
-        </div>
-        <div className="flex flex-row items-center gap-1">
-          <div className="font-semibold">$ {data.price}</div>
-          {!reservation && <div className="text-sm font-light"> / night</div>}
-        </div>
-        {onAction && actionLabel && (
-          <Button
-            disabled={disabled}
-            small
-            label={actionLabel}
-            onClick={() => {}}
-          />
-        )}
+        </p>
+        <p className="font-semibold">
+          $ {reservation?.totalPrice || data.price}
+          {!reservation && <span className="text-sm font-light"> / night</span>}
+        </p>
       </Link>
+      {onAction && actionLabel && (
+        <Button
+          disabled={disabled}
+          small
+          label={actionLabel}
+          onClick={handleCancel}
+        />
+      )}
     </div>
   );
 }

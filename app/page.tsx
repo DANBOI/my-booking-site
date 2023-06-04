@@ -4,7 +4,7 @@ import { getListings } from "@/utils/getListings";
 import Category from "@/components/Category";
 import Container from "@/components/Container";
 import EmptyList from "@/components/lists/EmptyList";
-import ListGrid from "@/components/lists/ListGrid";
+import HomeListGrid from "@/components/lists/HomeListGrid";
 
 export default async function Home() {
   const currentUser = await getCurrentUser();
@@ -14,7 +14,7 @@ export default async function Home() {
       <Category />
       <Container>
         {listings.length ? (
-          <ListGrid currentUser={currentUser} listings={listings} />
+          <HomeListGrid currentUser={currentUser} listings={listings} />
         ) : (
           <EmptyList showReset />
         )}

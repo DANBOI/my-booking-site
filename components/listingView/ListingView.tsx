@@ -1,7 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { differenceInDays, eachDayOfInterval } from "date-fns";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 import { Range } from "react-date-range";
 import { Listing, Reservation } from "@prisma/client";
@@ -10,6 +13,7 @@ import { SafeUser } from "@/types";
 import useCategories from "@/hooks/useCategories";
 import useCountries from "@/hooks/useCountries";
 import useLoginModal from "@/hooks/useLoginModal";
+import useFavorites from "@/hooks/useFavorites";
 
 import ListingHero from "./ListingHero";
 import ListingInfo from "./ListingInfo";
@@ -48,6 +52,12 @@ export default function ListingView({
     user,
   } = listing;
 
+  const router = useRouter();
+  const { favoriteIds, setfavoriteIds } = useFavorites();
+  useEffect(() => {
+    if (currentUser?.favoriteIds) setfavoriteIds(currentUser?.favoriteIds);
+  }, [currentUser?.favoriteIds, setfavoriteIds]);
+
   const loginModal = useLoginModal();
   const [isLoading, setIsLoading] = useState(false);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
@@ -58,6 +68,7 @@ export default function ListingView({
 
   const categoryItem = getCategoryByLabel(category);
   const location = getCountryByValue(locationValue);
+  const { startDate, endDate } = dateRange;
 
   //the date range that couldn't be picked up
   const disabledDates = useMemo(
@@ -71,21 +82,47 @@ export default function ListingView({
     [reservations]
   );
 
+  //create reservation
   const onCreateReservation = useCallback(() => {
-    if (!currentUser) {
-      return loginModal.onOpen();
-    }
+    if (!currentUser) return loginModal.onOpen();
     setIsLoading(true);
-  }, [currentUser, loginModal]);
+
+    axios
+      .post("/api/reservations", {
+        totalPrice,
+        startDate,
+        endDate,
+        listingId: listing?.id,
+      })
+      .then((res) => {
+        // console.log(res);
+        toast.success("Listing reserved!");
+        setDateRange(initialDateRange);
+        router.push("/");
+      })
+      .catch(() => {
+        toast.error("Something went wrong.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [
+    currentUser,
+    endDate,
+    listing?.id,
+    loginModal,
+    router,
+    startDate,
+    totalPrice,
+  ]);
 
   //calculate total price
   useEffect(() => {
-    const { startDate, endDate } = dateRange;
     if (startDate && endDate) {
       const dayCount = differenceInDays(endDate, startDate) || 1;
       setTotalPrice(dayCount * price);
     }
-  }, [dateRange, price]);
+  }, [endDate, price, startDate]);
 
   return (
     <article className="mx-auto mt-8 max-w-screen-lg">

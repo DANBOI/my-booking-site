@@ -2,9 +2,10 @@
 
 import { Listing } from "@prisma/client";
 import { SafeUser } from "@/types";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ListCard from "./ListCard";
 import axios from "axios";
+import useFavorites from "@/hooks/useFavorites";
 
 type Props = {
   listings: Listing[];
@@ -12,9 +13,14 @@ type Props = {
 };
 
 export default function ListGrid({ listings, currentUser }: Props) {
-  const [favoriteIds, setfavoriteIds] = useState(
-    currentUser?.favoriteIds || []
-  );
+  const { favoriteIds, setfavoriteIds } = useFavorites();
+
+  useEffect(() => {
+    if (currentUser?.favoriteIds) setfavoriteIds(currentUser?.favoriteIds);
+  }, [currentUser?.favoriteIds, setfavoriteIds]);
+  // const [favoriteIds, setfavoriteIds] = useState(
+  //   currentUser?.favoriteIds || []
+  // );
 
   return (
     <div className="list_grid">

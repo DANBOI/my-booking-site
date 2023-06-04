@@ -53,8 +53,8 @@ export default function ListCard({
         <div className="absolute right-3 top-3 z-20">
           <HeartButton
             listingId={data.id}
-            favoriteIds={favoriteIds}
-            setfavoriteIds={setfavoriteIds}
+            // favoriteIds={favoriteIds}
+            // setfavoriteIds={setfavoriteIds}
           />
         </div>
       )}

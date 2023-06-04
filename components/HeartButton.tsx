@@ -1,20 +1,24 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import axios from "axios";
+import useFavorites from "@/hooks/useFavorites";
+import { useRouter } from "next/navigation";
 
 type Props = {
-  favoriteIds: string[];
+  // favoriteIds: string[];
   listingId: string;
-  setfavoriteIds: (array: string[]) => void;
+  // setfavoriteIds: (array: string[]) => void;
 };
 
 export default function HeartButton({
-  favoriteIds,
+  // favoriteIds,
   listingId,
-  setfavoriteIds,
-}: Props) {
+}: // setfavoriteIds,
+Props) {
+  const router = useRouter();
+  const { favoriteIds, setfavoriteIds } = useFavorites();
   const hasFavorited = favoriteIds.includes(listingId);
 
   const toggleFavorite = useCallback(
@@ -28,13 +32,14 @@ export default function HeartButton({
 
       try {
         await axios.patch(`/api/users/favorites`, { favoriteIds: data });
+        // setfavoriteIds(data);
         setfavoriteIds(data);
-        // router.refresh();
+        router.refresh();
       } catch (error) {
         console.error(error);
       }
     },
-    [favoriteIds, hasFavorited, listingId, setfavoriteIds]
+    [favoriteIds, hasFavorited, listingId, router, setfavoriteIds]
   );
 
   return (

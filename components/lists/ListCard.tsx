@@ -54,7 +54,7 @@ export default function ListCard({
   }, [reservation]);
 
   return (
-    <div className="group relative">
+    <div className="group relative rounded-xl shadow-sm">
       {currentUser && (
         <div className="absolute right-3 top-3 z-20">
           <HeartButton listingId={data.id} />
@@ -63,7 +63,7 @@ export default function ListCard({
       <Link
         href={`/listings/${data.id}`}
         // onClick={() => router.push(`/listings/${data.id}`)}
-        className=" mb-3 flex flex-col gap-2"
+        className="mb-3 flex flex-col gap-2"
       >
         <figure className="relative aspect-square overflow-hidden rounded-xl">
           <Image
@@ -73,17 +73,20 @@ export default function ListCard({
             alt="Listing"
           />
         </figure>
-
-        <p className="text-lg font-semibold">
-          {location?.region}, {location?.label}
-        </p>
-        <p className="-mt-2 text-sm font-light text-neutral-500">
-          {reservationDate || data.category}
-        </p>
-        <p className="font-semibold">
-          $ {reservation?.totalPrice || data.price}
-          {!reservation && <span className="text-sm font-light"> / night</span>}
-        </p>
+        <div className="space-y-2 px-2">
+          <p className="text-lg font-semibold">
+            {location?.region}, {location?.label}
+          </p>
+          <p className="text-sm font-light text-neutral-500">
+            {reservationDate || data.category}
+          </p>
+          <p className="font-semibold">
+            $ {reservation?.totalPrice || data.price}
+            {!reservation && (
+              <span className="text-sm font-light"> / night</span>
+            )}
+          </p>
+        </div>
       </Link>
       {onAction && actionLabel && (
         <Button

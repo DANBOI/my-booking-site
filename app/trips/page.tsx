@@ -14,10 +14,7 @@ export default async function TripsPage() {
     <section className="py-8">
       {reservations.length ? (
         <Container>
-          <Heading
-            title="Trips"
-            subtitle="The reservations where you're going to"
-          />
+          <Heading title="Trips" subtitle="The places where you're going to" />
           <TripsListGrid
             currentUser={currentUser}
             reservations={reservations}

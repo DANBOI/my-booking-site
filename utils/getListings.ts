@@ -42,3 +42,19 @@ export async function getListingById(id: string) {
     throw new Error(error);
   }
 }
+
+export async function getListingsByFavoriteIds(ids: string[]) {
+  try {
+    const favoriteListings = await prisma.listing.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    return favoriteListings;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}

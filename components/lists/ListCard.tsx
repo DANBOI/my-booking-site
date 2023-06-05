@@ -37,7 +37,7 @@ export default function ListCard({
   // const router = useRouter();
   const location = getCountryByValue(data.locationValue);
 
-  const handleCancel = useCallback(
+  const handleAction = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       onAction?.(actionId);
@@ -93,7 +93,7 @@ export default function ListCard({
           disabled={disabled}
           small
           label={actionLabel}
-          onClick={handleCancel}
+          onClick={handleAction}
         />
       )}
     </div>

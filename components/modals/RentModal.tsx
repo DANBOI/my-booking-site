@@ -70,8 +70,6 @@ export default function RentModal({}: Props) {
   const roomCount = watch("roomCount");
   const bathroomCount = watch("bathroomCount");
   const imageSrc = watch("imageSrc");
-  // const description = watch("description");
-  // const price = watch("price");
 
   //dynamic import map resouces when location changes
   const CountryMap = useMemo(

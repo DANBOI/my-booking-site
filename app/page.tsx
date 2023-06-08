@@ -1,14 +1,19 @@
 import getCurrentUser from "@/utils/getCurrentUser";
-import { getListings } from "@/utils/getListings";
+import getListings, { QueryProps } from "@/utils/getListings";
 
 import Category from "@/components/Category";
 import Container from "@/components/Container";
 import EmptyList from "@/components/lists/EmptyList";
 import HomeListGrid from "@/components/lists/HomeListGrid";
 
-export default async function Home() {
+export type Props = {
+  searchParams: QueryProps;
+};
+
+export default async function Home({ searchParams }: Props) {
   const currentUser = await getCurrentUser();
-  const listings = await getListings();
+  const listings = await getListings(searchParams);
+  // console.log(searchParams);
   return (
     <section>
       <Category />

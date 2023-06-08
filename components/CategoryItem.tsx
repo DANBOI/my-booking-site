@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-// import qs from 'query-string';
-// import { useRouter, useSearchParams } from "next/navigation";
-// import { useCallback, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 import { IconType } from "react-icons";
 
 type Props = {
@@ -13,39 +12,40 @@ type Props = {
 };
 
 export default function CategoryItem({ icon: Icon, label, selected }: Props) {
-  /* found a better way to toggle urls by using <Link>
-    const router = useRouter();
-    const params = useSearchParams();
+  // const currentUrl = window.location.href;
+  const params = useSearchParams();
 
-    const handleClick = useCallback(() => {
-      let currentQuery = {};
+  /* url patterns
+  /
+  /?category=kitchen
+  /?category=kitchen&date=2022-01-01
+  /?location=abc
+  /?location=abc&date=2022-01-01
+  /?location=abc&date=2022-01-01&category=kitchen
+  */
+  const nextUrl = useMemo(() => {
+    //arrange current params
+    const queryInfo: any = {};
+    params.forEach((value, key) => {
+      queryInfo[key] = key.endsWith("Date") ? encodeURIComponent(value) : value;
+    });
 
-      if (params) {
-          currentQuery = qs.parse(params.toString())
-      }
+    //add/update or delete category based on selection
+    queryInfo.category = selected ? undefined : label;
 
-      const updatedQuery: any = {
-        ...currentQuery,
-        category: label
-      }
+    //create query string
+    const queryStr = Object.entries(queryInfo)
+      .map(([key, value]) => value && `${key}=${value}`)
+      .filter((e) => e)
+      .join("&");
 
-      if (params?.get('category') === label) {
-        delete updatedQuery.category;
-      }
-      
-      const url = qs.stringifyUrl({
-        url: '/',
-        query: updatedQuery
-      }, { skipNull: true });
-
-      router.push(url);
-    }, [label, router, params]);
-    */
+    return `/?${queryStr}`;
+  }, [label, params, selected]);
 
   return (
     <Link
       //   onClick={handleClick}
-      href={selected ? "/" : `/?category=${label}`}
+      href={nextUrl}
       className={`flex flex-col items-center justify-center gap-2 border-b-2 p-3 transition hover:text-primary ${
         selected
           ? "border-b-primary text-primary"

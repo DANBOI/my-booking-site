@@ -80,8 +80,9 @@ export default function SearchModal({}: Props) {
     const queryInfo = {
       category: params.get("category"),
       locationValue: location?.value,
-      startDate: formatISO(dateRange?.startDate),
-      endDate: formatISO(dateRange?.endDate),
+      //format dateObj to URI strings
+      startDate: encodeURIComponent(formatISO(dateRange?.startDate)),
+      endDate: encodeURIComponent(formatISO(dateRange?.endDate)),
       guestCount,
       roomCount,
       bathroomCount,

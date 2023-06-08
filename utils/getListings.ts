@@ -1,8 +1,58 @@
 import prisma from "./prisma";
 
-export async function getListings() {
+export type QueryProps = {
+  category?: string;
+  locationValue?: string;
+  startDate?: string;
+  endDate?: string;
+  guestCount?: number;
+  roomCount?: number;
+  bathroomCount?: number;
+};
+
+export default async function getListings({
+  category,
+  locationValue,
+  startDate,
+  endDate,
+  guestCount = 1,
+  roomCount = 1,
+  bathroomCount = 1,
+}: QueryProps) {
   try {
+    const queryObj: any = {
+      category,
+      locationValue,
+      guestCount: {
+        gte: +guestCount,
+      },
+      roomCount: {
+        gte: +roomCount,
+      },
+      bathroomCount: {
+        gte: +bathroomCount,
+      },
+      //checks if there are no reservations that overlap with the given date range.
+      NOT: {
+        reservations: {
+          some: {
+            OR: [
+              {
+                endDate: { gte: startDate },
+                startDate: { lte: startDate },
+              },
+              {
+                startDate: { lte: endDate },
+                endDate: { gte: endDate },
+              },
+            ],
+          },
+        },
+      },
+    };
+
     const listings = await prisma.listing.findMany({
+      where: queryObj,
       orderBy: {
         createdAt: "desc",
       },

@@ -133,7 +133,7 @@ export default function ListingView({
         id={id}
         currentUser={currentUser}
       />
-      <div className="grid grid-cols-1 items-center py-12 md:grid-cols-7 md:gap-10">
+      <div className="grid grid-cols-1 items-center gap-10 py-12 md:grid-cols-7">
         <div className="md:order-last md:col-span-3">
           <ListingReservation
             price={price}

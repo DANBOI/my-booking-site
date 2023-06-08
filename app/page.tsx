@@ -13,7 +13,6 @@ export type Props = {
 export default async function Home({ searchParams }: Props) {
   const currentUser = await getCurrentUser();
   const listings = await getListings(searchParams);
-  // console.log(searchParams);
   return (
     <section>
       <Category />

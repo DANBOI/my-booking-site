@@ -29,13 +29,13 @@ export default function UserMenu({ currentUser }: Props) {
       <div className="flex items-center gap-3">
         <div
           onClick={currentUser ? rentModal.onOpen : loginModal.onOpen}
-          className="hidden cursor-pointer rounded-full px-4 py-3 text-sm font-semibold transition hover:bg-secondary md:block"
+          className="hidden cursor-pointer whitespace-nowrap rounded-full px-4 py-3 text-sm font-semibold transition hover:bg-primary/70 hover:text-white md:block"
         >
           Rent your home
         </div>
         <div
           onClick={() => setOpen(!open)}
-          className="flex cursor-pointer items-center gap-3 rounded-full border border-secondary p-4 transition hover:shadow-md md:px-2 md:py-1"
+          className="flex cursor-pointer items-center gap-3 rounded-full border border-secondary p-4 text-primary transition hover:shadow-md md:px-2 md:py-1"
         >
           <AiOutlineMenu />
           <div className="hidden md:block">

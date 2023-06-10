@@ -36,7 +36,7 @@ export default function ListingHero({
       <div className="relative mt-1 h-[60vh] overflow-hidden rounded-xl">
         <Image src={imageSrc} fill className="object-cover" alt="Image" />
         <div className="absolute right-5 top-5">
-          <HeartButton listingId={id} />
+          <HeartButton listingId={id} currentUser={currentUser} />
         </div>
       </div>
     </>

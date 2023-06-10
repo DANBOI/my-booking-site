@@ -54,10 +54,10 @@ export default function ListCard({
   }, [reservation]);
 
   return (
-    <div className="group relative rounded-xl shadow-sm">
+    <div className="group relative rounded-xl shadow-md">
       {currentUser && (
-        <div className="absolute right-3 top-3 z-20">
-          <HeartButton listingId={data.id} />
+        <div className="absolute right-3 top-3 z-10">
+          <HeartButton listingId={data.id} currentUser={currentUser} />
         </div>
       )}
       <Link
@@ -71,6 +71,7 @@ export default function ListCard({
             className="object-cover transition group-hover:scale-110"
             src={data.imageSrc}
             alt="Listing"
+            priority={true}
           />
         </figure>
         <div className="space-y-2 px-2">
@@ -89,12 +90,14 @@ export default function ListCard({
         </div>
       </Link>
       {onAction && actionLabel && (
-        <Button
-          disabled={disabled}
-          small
-          label={actionLabel}
-          onClick={handleAction}
-        />
+        <div className="mx-4 mb-3">
+          <Button
+            disabled={disabled}
+            small
+            label={actionLabel}
+            onClick={handleAction}
+          />
+        </div>
       )}
     </div>
   );

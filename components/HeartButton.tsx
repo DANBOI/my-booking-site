@@ -1,28 +1,27 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import axios from "axios";
 import useFavorites from "@/hooks/useFavorites";
-import { useRouter } from "next/navigation";
+import useLoginModal from "@/hooks/useLoginModal";
+import { SafeUser } from "@/types";
 
 type Props = {
-  // favoriteIds: string[];
+  currentUser?: SafeUser | null;
   listingId: string;
-  // setfavoriteIds: (array: string[]) => void;
 };
 
-export default function HeartButton({
-  // favoriteIds,
-  listingId,
-}: // setfavoriteIds,
-Props) {
+export default function HeartButton({ currentUser, listingId }: Props) {
   const router = useRouter();
+  const loginModal = useLoginModal();
   const { favoriteIds, setfavoriteIds } = useFavorites();
   const hasFavorited = favoriteIds.includes(listingId);
 
   const toggleFavorite = useCallback(
     async (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!currentUser) return loginModal.onOpen();
       //won't be linked to the listing detail page
       e.stopPropagation();
 
@@ -32,14 +31,21 @@ Props) {
 
       try {
         await axios.patch(`/api/users/favorites`, { favoriteIds: data });
-        // setfavoriteIds(data);
         setfavoriteIds(data);
         router.refresh();
       } catch (error) {
         console.error(error);
       }
     },
-    [favoriteIds, hasFavorited, listingId, router, setfavoriteIds]
+    [
+      currentUser,
+      favoriteIds,
+      hasFavorited,
+      listingId,
+      loginModal,
+      router,
+      setfavoriteIds,
+    ]
   );
 
   return (

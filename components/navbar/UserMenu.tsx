@@ -44,7 +44,10 @@ export default function UserMenu({ currentUser }: Props) {
         </div>
       </div>
       {open && (
-        <div className="absolute right-0 top-12 flex w-[40vw] flex-col overflow-hidden rounded-xl bg-white text-sm shadow-md md:w-full">
+        <div
+          onClick={() => setOpen(false)}
+          className="absolute right-0 top-12 z-10 flex w-[40vw] flex-col overflow-hidden rounded-xl bg-white text-sm shadow-md md:w-full"
+        >
           {currentUser ? (
             <>
               <MenuItem label="My trips" href="/trips" />
